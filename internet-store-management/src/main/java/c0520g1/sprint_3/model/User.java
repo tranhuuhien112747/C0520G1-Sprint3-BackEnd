@@ -14,7 +14,6 @@ public class User {
     private String username;
     private String fullName;
     private String password;
-    private String passwordEncoder;
     private String gender;
     private String image;
     private String email;
@@ -33,14 +32,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private Collection<Bill> billCollection;
-
-    public String getPasswordEncoder() {
-        return passwordEncoder;
-    }
-
-    public void setPasswordEncoder(String passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public Long getIdUser() {
         return idUser;
