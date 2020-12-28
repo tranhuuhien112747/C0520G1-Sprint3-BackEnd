@@ -14,11 +14,14 @@ public class User {
     private String username;
     private String fullName;
     private String password;
-    private String gender;
+    private Boolean gender;
     private String image;
     private String email;
     private String money;
     private String timeRemaining;
+    private Boolean status;
+
+
 
     @ManyToOne
     @JoinColumn(name = "idRole")
@@ -65,11 +68,11 @@ public class User {
         this.password = password;
     }
 
-    public String getGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
@@ -107,6 +110,14 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public void setRole(Role role) {
