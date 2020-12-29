@@ -7,6 +7,8 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
 
+    List<User> findAllByStatusTrue();
+
     User findById(Long id);
 
     void save(User user);

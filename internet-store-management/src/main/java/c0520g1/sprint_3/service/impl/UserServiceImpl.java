@@ -20,6 +20,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAllByStatusTrue() {
+        return userRepository.findAllByStatusTrue();
+    }
+
+    @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
@@ -32,7 +37,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(Long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setStatus(false);
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -43,4 +52,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
+
+
 }
