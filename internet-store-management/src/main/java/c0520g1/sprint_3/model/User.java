@@ -19,9 +19,8 @@ public class User {
     private String email;
     private String money;
     private String timeRemaining;
+    private String birthday;
     private Boolean status;
-
-
 
     @ManyToOne
     @JoinColumn(name = "idRole")
@@ -35,6 +34,14 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private Collection<Bill> billCollection;
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
     public Long getIdUser() {
         return idUser;
