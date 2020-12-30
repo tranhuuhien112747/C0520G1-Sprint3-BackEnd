@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
-@RequestMapping("computer")
 @CrossOrigin
+@RequestMapping("computer")
+
 public class ComputerController {
     @Autowired
     ComputerService computerService;
@@ -20,7 +20,11 @@ public class ComputerController {
     @GetMapping("/list")
     public ResponseEntity<List<Computer>> listComputers() {
         List<Computer> computers = computerService.findAll();
-        return new ResponseEntity<>(computers, HttpStatus.OK);
+        if (computers == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(computers, HttpStatus.OK);
+        }
     }
 
     @GetMapping("/{idComputer}")
@@ -32,7 +36,7 @@ public class ComputerController {
         return new ResponseEntity<>(computer, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/create")
+    @PostMapping("/create")
     public ResponseEntity<Void> createUser(@RequestBody Computer computer) {
         if (computer == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,9 +60,10 @@ public class ComputerController {
         Computer user = computerService.findById(idComputer);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            computerService.deleteById(idComputer);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        computerService.deleteById(idComputer);
 
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
