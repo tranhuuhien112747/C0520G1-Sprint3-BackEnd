@@ -1,7 +1,6 @@
 package c0520g1.sprint_3.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.util.Set;
 

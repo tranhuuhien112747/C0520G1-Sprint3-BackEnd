@@ -21,11 +21,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
     @Autowired
     RoleService roleService;
-
-//    @Autowired
+    //    @Autowired
 //    PasswordEncoder passwordEncoder;
 
     @GetMapping("")
@@ -61,6 +59,7 @@ public class UserController {
             userNew.setImage(user.getImage());
             userNew.setEmail(user.getEmail());
             userNew.setMoney(user.getMoney());
+            userNew.setBirthday(user.getBirthday());
             userService.save(userNew);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -84,7 +83,7 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-       userService.deleteById(idUser);
+        userService.deleteById(idUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

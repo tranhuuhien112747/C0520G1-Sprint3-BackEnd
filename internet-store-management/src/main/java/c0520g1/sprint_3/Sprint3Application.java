@@ -16,5 +16,4 @@ public class Sprint3Application {
 //        return new BCryptPasswordEncoder();
 //        }
 
-
 }
