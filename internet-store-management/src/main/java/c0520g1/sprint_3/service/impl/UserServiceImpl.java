@@ -53,5 +53,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public List<User> findAllByUsernameContaining(String inputSearch) {
+       return userRepository.findAllByUsernameContaining(inputSearch);
+    }
+
+    @Override
+    public List<User> findAllByUsernameContainingOrFullNameContaining(String inputSearch) {
+        return userRepository.findAllByUsernameContainingOrFullNameContainingOrEmailContaining(inputSearch, inputSearch, inputSearch);
+    }
 
 }
