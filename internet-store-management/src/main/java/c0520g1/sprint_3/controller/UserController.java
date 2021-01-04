@@ -36,10 +36,14 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
     @Autowired
     RoleService roleService;
+
+
     @Autowired
     PasswordEncoder passwordEncoder;
+
 
     @GetMapping("")
     public ResponseEntity<List<User>> getListUser() {
@@ -75,7 +79,6 @@ public class UserController {
             userNew.setGender(user.getGender());
             userNew.setEmail(user.getEmail());
             userNew.setMoney(user.getMoney());
-            userNew.setBirthday(user.getBirthday());
             userService.save(userNew);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -99,7 +102,7 @@ public class UserController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        userService.deleteById(idUser);
+       userService.deleteById(idUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

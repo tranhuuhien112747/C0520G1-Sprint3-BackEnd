@@ -16,6 +16,8 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,10 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -40,6 +39,7 @@ public class LoginController {
   public static String GOOGLE_CLIENT_ID = "103585693874-0bjkl21cmmjf8d9n09io95ciuveiievl.apps.googleusercontent.com";
 
   public static String PASSWORD = "123";
+  private static String emailInput;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -56,6 +56,8 @@ public class LoginController {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  JavaMailSender javaMailSender;
 
   @PostMapping("/login")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -103,6 +105,7 @@ public class LoginController {
     final String[] fields = {"name", "picture"};
     org.springframework.social.facebook.api.User userFacebook = facebook.fetchObject("me", org.springframework.social.facebook.api.User.class, fields);
     User user;
+    System.out.println(userFacebook);
     if (userFacebook.getName() == null) {
       user = saveUser(userFacebook.getName());
     } else {
@@ -142,5 +145,31 @@ public class LoginController {
     Role rolUser = roleService.findById(2L);
     user.setRole(rolUser);
     return userRepository.save(user);
+  }
+
+  @GetMapping("/send")
+  public ResponseEntity<String> sendEmail(@RequestParam("to") String to){
+    User user = userRepository.findUserByEmail(to);
+    if(user != null){
+      SimpleMailMessage msg = new SimpleMailMessage();
+      msg.setTo(to);
+      emailInput = to;
+      msg.setSubject("Mã xác nhận đặt lại mật khẩu.");
+      int randomCode = ((int) Math.floor(Math.random() * 8999) + 10000);
+      msg.setText("Mã xác nhận của bạn là: "+ randomCode);
+      javaMailSender.send(msg);
+      return new ResponseEntity<>(randomCode+"",HttpStatus.OK);
+    }
+    return new ResponseEntity<>( null,HttpStatus.OK);
+  }
+  @GetMapping("/resetPassWord")
+  public ResponseEntity<Boolean> resetPassWord(@RequestParam("password") String password){
+     User user = userRepository.findUserByEmail(emailInput);
+      if(user == null){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      user.setPassword(passwordEncoder.encode(password));
+      userRepository.save(user);
+      return new ResponseEntity<>(true,HttpStatus.OK);
   }
 }

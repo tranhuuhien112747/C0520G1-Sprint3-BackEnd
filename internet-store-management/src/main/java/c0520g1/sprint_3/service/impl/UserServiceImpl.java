@@ -62,4 +62,5 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllByUsernameContainingOrFullNameContaining(String inputSearch) {
         return userRepository.findAllByUsernameContainingOrFullNameContainingOrEmailContaining(inputSearch, inputSearch, inputSearch);
     }
+
 }
