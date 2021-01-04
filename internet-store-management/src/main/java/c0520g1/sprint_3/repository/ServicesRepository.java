@@ -21,4 +21,6 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
     @Query(value = "INSERT INTO services(price,quantity,service_name,unit) value (?,?,?,?)", nativeQuery = true)
     Void createService(String price, String quantity, String service_name, String unit);
 
+    Services findServicesByServiceName(String name);
+
 }
