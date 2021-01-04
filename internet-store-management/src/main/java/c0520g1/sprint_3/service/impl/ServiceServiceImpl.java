@@ -34,4 +34,9 @@ public class ServiceServiceImpl implements ServicesService {
     public void deleteById(Long id) {
         servicesRepository.deleteById(id);
     }
+
+    @Override
+    public Services findServiceByName(String name) {
+        return servicesRepository.findServicesByServiceName(name);
+    }
 }

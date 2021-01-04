@@ -19,25 +19,27 @@ public class ServiceController {
     @GetMapping
     public ResponseEntity<List<Services>> showServiceList() {
         List<Services> servicesList = servicesService.findAll();
-        if(servicesList.isEmpty()){
+        if (servicesList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-            return new ResponseEntity<>(servicesList, HttpStatus.OK);
+        return new ResponseEntity<>(servicesList, HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Void> createService(@RequestBody Services services){
-        if(services == null){
+    public ResponseEntity<Services> createService(@RequestBody Services services) {
+        Services services1;
+        if (services == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         servicesService.save(services);
-        return new ResponseEntity<>(HttpStatus.OK);
+        services1 = servicesService.findServiceByName(services.getServiceName());
+        return new ResponseEntity<>(services1, HttpStatus.OK);
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Void> updateService(@PathVariable long id,@RequestBody Services services){
+    public ResponseEntity<Void> updateService(@PathVariable long id, @RequestBody Services services) {
         Services services1 = servicesService.findById(id);
-        if (services1 == null){
+        if (services1 == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         services1.setServiceName(services.getServiceName());
@@ -49,13 +51,21 @@ public class ServiceController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteService(@PathVariable long id){
+    public ResponseEntity<Void> deleteService(@PathVariable long id) {
         Services services = servicesService.findById(id);
-        if(services == null){
+        if (services == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         servicesService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<Services> findServiceById(@PathVariable long id) {
+        Services services = servicesService.findById(id);
+        if (services == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(services, HttpStatus.OK);
+    }
 }
