@@ -31,6 +31,7 @@ dependencies {
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.11'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-social-facebook
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-social-facebook', version: '1.5.22.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 test {
