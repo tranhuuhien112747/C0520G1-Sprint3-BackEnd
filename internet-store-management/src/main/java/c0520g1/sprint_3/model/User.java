@@ -70,10 +70,6 @@ public class User {
     @JsonIgnoreProperties("userCollection")
     private Role role;
 
-//    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties("users")
-//    private Set<Computer> computers;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private Collection<Bill> billCollection;
@@ -88,14 +84,6 @@ public class User {
 
     public void setComputerCollection(Collection<Computer> computerCollection) {
         this.computerCollection = computerCollection;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
     }
 
     public Long getIdUser() {
@@ -185,15 +173,7 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-
-//    public Set<Computer> getComputers() {
-//        return computers;
-//    }
-//
-//    public void setComputers(Set<Computer> computers) {
-//        this.computers = computers;
-//    }
-
+    
     public Collection<Bill> getBillCollection() {
         return billCollection;
     }
