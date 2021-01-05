@@ -3,69 +3,89 @@ package c0520g1.sprint_3.dto;
 import java.util.List;
 
 public class UserDTO {
-    private String token;
-    private String type = "Bearer";
-    private long id;
-    private String username;
-    private String fullName;
-    private List<String> role;
+  private String token;
+  private String type = "Bearer";
+  private long id;
+  private String username;
+  private String fullName;
+  private String money;
+  private String timeRemaining;
+  private List<String> role;
 
-    public UserDTO() {
-    }
+  public UserDTO() {
+  }
 
-    public UserDTO(String token, long id, String username, String fullName, List<String> role) {
-        this.token = token;
-        this.id = id;
-        this.username = username;
-        this.fullName = fullName;
-        this.role = role;
-    }
+  public UserDTO(String token, long id, String username, String fullName, List<String> role, String money,String timeRemaining) {
+    this.token = token;
+    this.id = id;
+    this.username = username;
+    this.fullName = fullName;
+    this.money = money;
+    this.timeRemaining = timeRemaining;
+    this.role = role;
+  }
 
-    public String getToken() {
-        return token;
-    }
+  public String getMoney() {
+    return money;
+  }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+  public void setMoney(String money) {
+    this.money = money;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public String getTimeRemaining() {
+    return timeRemaining;
+  }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+  public void setTimeRemaining(String timeRemaining) {
+    this.timeRemaining = timeRemaining;
+  }
 
-    public long getId() {
-        return id;
-    }
+  public String getToken() {
+    return token;
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public void setToken(String token) {
+    this.token = token;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getType() {
+    return type;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setType(String type) {
+    this.type = type;
+  }
 
-    public String getFullName() {
-        return fullName;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public List<String> getRole() {
-        return role;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setRole(List<String> role) {
-        this.role = role;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getFullName() {
+    return fullName;
+  }
+
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
+  }
+
+  public List<String> getRole() {
+    return role;
+  }
+
+  public void setRole(List<String> role) {
+    this.role = role;
+  }
 }

@@ -77,7 +77,10 @@ public class LoginController {
       userDetails.getIdUser(),
       userDetails.getUsername(),
       userDetails.getFullName(),
-      roles));
+      roles,
+      userDetails.getMoney(),
+      userDetails.getTimeRemaining()
+      ));
   }
 
   @PostMapping("login-google")
@@ -129,11 +132,14 @@ public class LoginController {
     List<String> roles = userDetails.getAuthorities().stream()
       .map(item -> item.getAuthority())
       .collect(Collectors.toList());
+
     return new UserDTO(jwt,
       userDetails.getIdUser(),
       userDetails.getUsername(),
       userDetails.getFullName(),
-      roles);
+      roles,
+      userDetails.getMoney(),
+      userDetails.getTimeRemaining());
   }
 
   private User saveUser(String value) {
