@@ -20,6 +20,7 @@ import java.util.List;
  * 01-01-2021       Trần Hữu Hiên
  */
 public class BillDTO {
+    private Long idService;
     private Long idBill;
     private Long idUser;
     private boolean status;
@@ -30,6 +31,22 @@ public class BillDTO {
         this.idUser = idUser;
         this.status = status;
         this.list = list;
+    }
+
+    public BillDTO() {
+    }
+
+    public BillDTO(Long idService, Long idUser) {
+        this.idService = idService;
+        this.idUser = idUser;
+    }
+
+    public Long getIdService() {
+        return idService;
+    }
+
+    public void setIdService(Long idService) {
+        this.idService = idService;
     }
 
     public Long getIdBill() {

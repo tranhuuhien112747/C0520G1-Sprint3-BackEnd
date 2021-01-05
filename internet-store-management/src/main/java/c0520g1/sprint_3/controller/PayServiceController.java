@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -126,6 +127,45 @@ public class PayServiceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(value = "/deposit")
+    public ResponseEntity<?> createBillDeposit(@RequestBody BillDTO billDTO) {
+        Services newService = null;
+        Bill newBill = new Bill();
+        BillServices billServices = new BillServices();
+        newBill.setStatus(false);
+        newBill.setStatusDisplay(true);
+        newBill.setUser(userService.findById(billDTO.getIdUser()));
+        bill.create(newBill);
+        newService = services.findById(billDTO.getIdService());
+        billServices.setBill(bill.findById(newBill.getIdBill()));
+        billServices.setServices(newService);
+        billServices.setQuantityBooked(Long.parseLong(newService.getQuantity()));
+        billServiceService.create(billServices);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/deposit/{idBill}")
+    public ResponseEntity<Void> payDepositAccountUser(@PathVariable Long idBill) {
+        Services newService = null;
+        String deposit = null;
+        String moneyUser = null;
+        String total = null;
+        BillServices billServices = billServiceService.findById(idBill);
+        Bill newBill = bill.findById(billServices.getBill().getIdBill());
+        newBill.setStatus(true);
+        newBill.setStatusDisplay(false);
+        bill.create(newBill);
+
+        newService = services.findById(billServices.getServices().getIdService());
+        User user = userService.findById(newBill.getUser().getIdUser());
+        deposit = newService.getPrice();
+        moneyUser = user.getMoney();
+        total = String.valueOf(Double.parseDouble(moneyUser) + Double.parseDouble(deposit));
+        user.setMoney(total);
+        userService.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping(value = "/listBill")
     public ResponseEntity<List<Bill>> getListBill() {
         List<Bill> billList = bill.findBillByStatusDisplayTrue();
@@ -153,4 +193,18 @@ public class PayServiceController {
         bill.create(newBill);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getBuyHours")
+    public ResponseEntity<?> getTimeRemainingUser(@RequestParam String idUser, @RequestParam String priceHour) {
+        User user = userService.findById(Long.parseLong(idUser));
+        double price = Double.parseDouble(priceHour);
+        double currentMoneyUser = Double.parseDouble(user.getMoney());
+        double moneyUser = currentMoneyUser - price;
+        double time = (price / 5000) * 60;
+        user.setMoney(String.valueOf(moneyUser));
+        user.setTimeRemaining(String.valueOf(time));
+        userService.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
