@@ -72,13 +72,9 @@ public class UserController {
         } else {
             userNew.setUsername(user.getUsername());
             userNew.setFullName(user.getFullName());
-
-//            if (user.getPassword() != "") {
-//               userNew.setPassword(passwordEncoder.encode(user.getPassword()));
-//            }
+            userNew.setBirthday(user.getBirthday());
             userNew.setGender(user.getGender());
             userNew.setEmail(user.getEmail());
-            userNew.setMoney(user.getMoney());
             userService.save(userNew);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -120,7 +116,6 @@ public class UserController {
             user.setTimeRemaining("");
             user.setStatus(true);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-//            user.setPassword(user.getPassword());
             userService.save(user);
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -140,7 +135,7 @@ public class UserController {
 
     @GetMapping("/inputSearch")
     public ResponseEntity<List<User>> searchUsers(@RequestParam("valueSearch") String inputSearch) {
-        List<User> userList = userService.findAllByUsernameContainingOrFullNameContaining(inputSearch);
+        List<User> userList = userService.searchUser(inputSearch);
         if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
