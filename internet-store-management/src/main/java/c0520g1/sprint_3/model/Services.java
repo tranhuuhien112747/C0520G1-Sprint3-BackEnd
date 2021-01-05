@@ -5,7 +5,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
-import java.util.Set;
 
 @Entity
 public class Services {
@@ -38,14 +37,14 @@ public class Services {
   
     @OneToMany(mappedBy = "services", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("services")
-    private Collection<BillService> billServiceCollection;
+    private Collection<BillServices> billServiceCollection;
 
   public Services() {
   }
-  public Collection<BillService> getBillServiceCollection() {
+  public Collection<BillServices> getBillServiceCollection() {
     return billServiceCollection;
   }
-  public void setBillServiceCollection(Collection<BillService> billServiceCollection) {
+  public void setBillServiceCollection(Collection<BillServices> billServiceCollection) {
     this.billServiceCollection = billServiceCollection;
   }
   public Long getIdService() {

@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 @Entity
-public class BillService {
+public class BillServices {
   @Id
   private Long idBillService;
   private Long quantityBooked;

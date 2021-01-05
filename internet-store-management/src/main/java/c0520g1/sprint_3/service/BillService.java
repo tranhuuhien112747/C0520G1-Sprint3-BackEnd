@@ -12,4 +12,6 @@ public interface BillService {
     void deleteById(Long id);
 
     Bill findById(Long id);
+
+    List<Bill> findBillByStatusDisplayTrue();
 }

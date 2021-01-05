@@ -6,7 +6,6 @@ import c0520g1.sprint_3.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -35,5 +34,10 @@ public class BillServiceImpl implements BillService {
     @Override
     public Bill findById(Long id) {
         return billRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Bill> findBillByStatusDisplayTrue() {
+        return billRepository.findBillByStatusDisplayTrue();
     }
 }
