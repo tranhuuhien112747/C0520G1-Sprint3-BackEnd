@@ -52,15 +52,9 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
-
     @Override
-    public List<User> findAllByUsernameContaining(String inputSearch) {
-       return userRepository.findAllByUsernameContaining(inputSearch);
-    }
-
-    @Override
-    public List<User> findAllByUsernameContainingOrFullNameContaining(String inputSearch) {
-        return userRepository.findAllByUsernameContainingOrFullNameContainingOrEmailContaining(inputSearch, inputSearch, inputSearch);
+    public List<User> searchUser(String inputSearch) {
+        return userRepository.findAllByStatusTrueAndUsernameContainingOrFullNameContainingOrEmailContaining(inputSearch, inputSearch, inputSearch);
     }
 
 }

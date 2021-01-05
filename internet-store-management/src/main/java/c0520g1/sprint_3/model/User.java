@@ -11,13 +11,13 @@ import java.util.Set;
 
 /**
  * class question
- *
+ * <p>
  * Version 1.0
- *
+ * <p>
  * Date: 26/12/2020
- *
+ * <p>
  * Copyright
- *
+ * <p>
  * Modification Logs:
  * DATE                 AUTHOR          DESCRIPTION
  * -----------------------------------------------------------------------
@@ -26,8 +26,12 @@ import java.util.Set;
 
 @Entity
 public class User {
+    public User() {
+    }
+
     public interface checkCreate {
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
@@ -53,7 +57,13 @@ public class User {
 
     private Boolean status;
 
+    public String getBirthday() {
+        return birthday;
+    }
 
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
     @ManyToOne
     @JoinColumn(name = "idRole")
