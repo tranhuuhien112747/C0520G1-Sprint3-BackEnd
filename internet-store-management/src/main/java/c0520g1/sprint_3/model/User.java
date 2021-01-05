@@ -27,13 +27,25 @@ public class User {
     @JsonIgnoreProperties("userCollection")
     private Role role;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("users")
-    private Set<Computer> computers;
+//    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties("users")
+//    private Set<Computer> computers;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private Collection<Bill> billCollection;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private Collection<Computer> computerCollection;
+
+    public Collection<Computer> getComputerCollection() {
+        return computerCollection;
+    }
+
+    public void setComputerCollection(Collection<Computer> computerCollection) {
+        this.computerCollection = computerCollection;
+    }
 
     public String getBirthday() {
         return birthday;
@@ -131,13 +143,13 @@ public class User {
         this.role = role;
     }
 
-    public Set<Computer> getComputers() {
-        return computers;
-    }
-
-    public void setComputers(Set<Computer> computers) {
-        this.computers = computers;
-    }
+//    public Set<Computer> getComputers() {
+//        return computers;
+//    }
+//
+//    public void setComputers(Set<Computer> computers) {
+//        this.computers = computers;
+//    }
 
     public Collection<Bill> getBillCollection() {
         return billCollection;

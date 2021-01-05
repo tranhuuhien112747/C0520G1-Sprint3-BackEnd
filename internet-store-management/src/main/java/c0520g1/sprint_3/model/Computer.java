@@ -1,7 +1,11 @@
 package c0520g1.sprint_3.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @Entity
@@ -12,11 +16,23 @@ public class Computer {
     private String computerName;
     private String timeStart;
     private String timeUser;
-    private String status;
-    @ManyToMany()
-    @JoinTable(name = "computer_user", joinColumns = @JoinColumn(name="idComputer"), inverseJoinColumns = @JoinColumn(name="idUser"))
-    @JsonIgnoreProperties("computers")
-    private Set<User> users;
+    private Boolean status;
+    //    @ManyToMany()
+//    @JoinTable(name = "computer_user", joinColumns = @JoinColumn(name="idComputer"), inverseJoinColumns = @JoinColumn(name="idUser"))
+//    @JsonIgnoreProperties("computers")
+//    private Set<User> users;
+    @ManyToOne
+    @JoinColumn(name = "idUser")
+    @JsonIgnoreProperties("computerCollection")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @ManyToOne
     @JoinColumn(name = "idStatusComputer")
@@ -55,21 +71,21 @@ public class Computer {
         this.timeUser = timeUser;
     }
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
+//    public Set<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Set<User> users) {
+//        this.users = users;
+//    }
 
     public StatusComputer getStatusComputer() {
         return statusComputer;
