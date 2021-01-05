@@ -14,7 +14,6 @@ public class ServiceServiceImpl implements ServicesService {
     @Autowired
     ServicesRepository servicesRepository;
 
-
     @Override
     public List<Services> findAll() {
         return servicesRepository.findAll();
