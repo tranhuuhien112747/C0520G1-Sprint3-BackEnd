@@ -11,13 +11,13 @@ import java.util.Set;
 
 /**
  * class question
- *
+ * <p>
  * Version 1.0
- *
+ * <p>
  * Date: 26/12/2020
- *
+ * <p>
  * Copyright
- *
+ * <p>
  * Modification Logs:
  * DATE                 AUTHOR          DESCRIPTION
  * -----------------------------------------------------------------------
@@ -26,8 +26,12 @@ import java.util.Set;
 
 @Entity
 public class User {
+    public User() {
+    }
+
     public interface checkCreate {
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
@@ -53,20 +57,34 @@ public class User {
 
     private Boolean status;
 
+    public String getBirthday() {
+        return birthday;
+    }
 
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
 
     @ManyToOne
     @JoinColumn(name = "idRole")
     @JsonIgnoreProperties("userCollection")
     private Role role;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("users")
-    private Set<Computer> computers;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private Collection<Bill> billCollection;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private Collection<Computer> computerCollection;
+
+    public Collection<Computer> getComputerCollection() {
+        return computerCollection;
+    }
+
+    public void setComputerCollection(Collection<Computer> computerCollection) {
+        this.computerCollection = computerCollection;
+    }
 
     public Long getIdUser() {
         return idUser;
@@ -155,15 +173,7 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-
-    public Set<Computer> getComputers() {
-        return computers;
-    }
-
-    public void setComputers(Set<Computer> computers) {
-        this.computers = computers;
-    }
-
+    
     public Collection<Bill> getBillCollection() {
         return billCollection;
     }
