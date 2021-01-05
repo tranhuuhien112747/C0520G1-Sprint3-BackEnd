@@ -7,6 +7,8 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
 
+    List<User> findAllByStatusTrue();
+
     User findById(Long id);
 
     void save(User user);
@@ -14,4 +16,8 @@ public interface UserService {
     void deleteById(Long id);
 
     void changePassWord(Long id, String password);
+
+    List<User> findAllByUsernameContaining(String inputSearch);
+
+    List<User> findAllByUsernameContainingOrFullNameContaining(String inputSearch);
 }

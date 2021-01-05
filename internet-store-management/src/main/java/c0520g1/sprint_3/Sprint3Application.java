@@ -7,7 +7,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Sprint3Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Sprint3Application.class, args);
-    }
-
+        SpringApplication.run(Sprint3Application.class, args);}
 }
