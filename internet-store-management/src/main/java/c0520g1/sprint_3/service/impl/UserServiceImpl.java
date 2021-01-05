@@ -52,4 +52,9 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
+    @Override
+    public List<User> searchUser(String inputSearch) {
+        return userRepository.findAllByStatusTrueAndUsernameContainingOrFullNameContainingOrEmailContaining(inputSearch, inputSearch, inputSearch);
+    }
+
 }

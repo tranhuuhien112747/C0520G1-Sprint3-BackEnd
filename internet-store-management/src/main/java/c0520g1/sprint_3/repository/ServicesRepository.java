@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import java.util.List;
-
 @Repository
 public interface ServicesRepository extends JpaRepository<Services, Long> {
 
@@ -22,5 +20,7 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
 
     @Query(value = "INSERT INTO services(price,quantity,service_name,unit) value (?,?,?,?)", nativeQuery = true)
     Void createService(String price, String quantity, String service_name, String unit);
+
+    Services findServicesByServiceName(String name);
 
 }

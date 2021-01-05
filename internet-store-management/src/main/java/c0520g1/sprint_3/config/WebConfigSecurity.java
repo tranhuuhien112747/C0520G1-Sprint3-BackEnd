@@ -14,50 +14,60 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
+/**
+ * WebConfigSecurity
+ * <p>
+ * Version 1.0
+ * <p>
+ * Date: 24/11/2020
+ * <p>
+ * Copyright
+ * <p>
+ * Author: Nguyễn Tiến Hải
+ */
 @Configuration
 @EnableWebSecurity
 public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+  @Autowired
+  UserDetailsServiceImpl userDetailsService;
 
-    @Bean
-    public JwtAuthenticationFilter authenticationJwtTokenFilter() {
-        return new JwtAuthenticationFilter();
-    }
+  @Bean
+  public JwtAuthenticationFilter authenticationJwtTokenFilter() {
+    return new JwtAuthenticationFilter();
+  }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
+  @Override
+  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+  }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    /**
-     * check authentication and authorization of user
-     *
-     * @param http
-     * @throws Exception
-     */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/login", "/login-google", "/login-facebook","/test/hello", "/**").permitAll()
-//                .antMatchers("/", "/user/list").permitAll()
-//                .antMatchers("/question/**","/exam").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-                .anyRequest().authenticated();
+  /**
+   * check authentication and authorization of user
+   *
+   * @param http
+   * @throws Exception
+   */
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.cors().and().csrf().disable()
+      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+      .authorizeRequests().antMatchers("/login", "/login-google","/login-facebook","/send","/resetPassWord").permitAll();
+//      .antMatchers("/").permitAll()
+//      .antMatchers("/pay", "/request/**","/service/**").hasAnyRole("USER", "ADMIN")
+//      .antMatchers("/**").hasRole("ADMIN")
+//      .anyRequest().authenticated();
 
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
-
+    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+  }
 }

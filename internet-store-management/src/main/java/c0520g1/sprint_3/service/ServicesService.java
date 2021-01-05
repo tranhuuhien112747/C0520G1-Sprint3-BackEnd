@@ -12,4 +12,6 @@ public interface ServicesService {
     void save(Services services);
 
     void deleteById(Long id);
+
+    Services findServiceByName(String name);
 }

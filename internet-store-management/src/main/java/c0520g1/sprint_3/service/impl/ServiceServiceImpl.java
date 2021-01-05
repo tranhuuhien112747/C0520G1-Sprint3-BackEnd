@@ -14,7 +14,6 @@ public class ServiceServiceImpl implements ServicesService {
     @Autowired
     ServicesRepository servicesRepository;
 
-
     @Override
     public List<Services> findAll() {
         return servicesRepository.findAll();
@@ -33,5 +32,10 @@ public class ServiceServiceImpl implements ServicesService {
     @Override
     public void deleteById(Long id) {
         servicesRepository.deleteById(id);
+    }
+
+    @Override
+    public Services findServiceByName(String name) {
+        return servicesRepository.findServicesByServiceName(name);
     }
 }

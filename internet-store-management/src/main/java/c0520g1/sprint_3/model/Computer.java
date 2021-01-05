@@ -17,10 +17,6 @@ public class Computer {
     private String timeStart;
     private String timeUser;
     private Boolean status;
-    //    @ManyToMany()
-//    @JoinTable(name = "computer_user", joinColumns = @JoinColumn(name="idComputer"), inverseJoinColumns = @JoinColumn(name="idUser"))
-//    @JsonIgnoreProperties("computers")
-//    private Set<User> users;
     @ManyToOne
     @JoinColumn(name = "idUser")
     @JsonIgnoreProperties("computerCollection")
@@ -95,3 +91,4 @@ public class Computer {
         this.statusComputer = statusComputer;
     }
 }
+

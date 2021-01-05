@@ -16,4 +16,7 @@ public interface UserService {
     void deleteById(Long id);
 
     void changePassWord(Long id, String password);
+
+    List<User> searchUser(String inputSearch);
+
 }
