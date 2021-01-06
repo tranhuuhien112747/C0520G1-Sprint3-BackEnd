@@ -52,7 +52,6 @@ public class PayServiceController {
      *
      * @return list <Service>
      */
-
     @GetMapping(value = "/service")
     public ResponseEntity<List<Services>> getListService() {
         List<Services> servicesList = services.findAll();
@@ -62,8 +61,10 @@ public class PayServiceController {
         return new ResponseEntity<>(servicesList, HttpStatus.OK);
     }
 
+
     /**
      * payment by account
+     * Thanh toán bằng tài khoản
      *
      * @param billDTO
      * @return void
@@ -97,8 +98,10 @@ public class PayServiceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
     /**
      * payment direct
+     * Thanh toán trực tiếp
      *
      * @param billDTO
      * @return void
@@ -127,6 +130,45 @@ public class PayServiceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    /**
+     * payment PayPal
+     * Thanh toán qua PayPal
+     *
+     * @param billDTO
+     * @return void
+     */
+    @PostMapping(value = "/payment-paypal")
+    public ResponseEntity<?> createBillPaymentPayPal(@RequestBody BillDTO billDTO) {
+        Services newService;
+        Bill newBill = new Bill();
+        BillServices billServices;
+        int size = billDTO.getList().size();
+        newBill.setStatus(true);
+        newBill.setStatusDisplay(true);
+        newBill.setUser(userService.findById(billDTO.getIdUser()));
+        bill.create(newBill);
+        for (int i = 0; i < size; i++) {
+            newService = services.findById(billDTO.getList().get(i).getIdService());
+            newService.setQuantity(String.valueOf(Integer.parseInt(newService.getQuantity()) - billDTO.getList().get(i).getQuantityPurchased()));
+            services.save(newService);
+            billServices = new BillServices();
+            billServices.setBill(bill.findById(newBill.getIdBill()));
+            billServices.setServices(newService);
+            billServices.setQuantityBooked(billDTO.getList().get(i).getQuantityPurchased());
+            billServiceService.create(billServices);
+
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     *
+     *
+     *
+     * @param billDTO
+     * @return void
+     */
     @PostMapping(value = "/deposit")
     public ResponseEntity<?> createBillDeposit(@RequestBody BillDTO billDTO) {
         Services newService = null;
