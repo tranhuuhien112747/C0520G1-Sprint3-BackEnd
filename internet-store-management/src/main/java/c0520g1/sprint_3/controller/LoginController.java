@@ -74,13 +74,13 @@ public class LoginController {
       .collect(Collectors.toList());
 
     return ResponseEntity.ok(new UserDTO(jwt,
-      userDetails.getIdUser(),
-      userDetails.getUsername(),
-      userDetails.getFullName(),
-      roles,
-      userDetails.getMoney(),
-      userDetails.getTimeRemaining()
-      ));
+            userDetails.getIdUser(),
+            userDetails.getUsername(),
+            userDetails.getFullName(),
+            roles,
+            userDetails.getMoney(),
+            userDetails.getTimeRemaining()
+    ));
   }
 
   @PostMapping("login-google")
@@ -132,14 +132,13 @@ public class LoginController {
     List<String> roles = userDetails.getAuthorities().stream()
       .map(item -> item.getAuthority())
       .collect(Collectors.toList());
-
     return new UserDTO(jwt,
-      userDetails.getIdUser(),
-      userDetails.getUsername(),
-      userDetails.getFullName(),
-      roles,
-      userDetails.getMoney(),
-      userDetails.getTimeRemaining());
+            userDetails.getIdUser(),
+            userDetails.getUsername(),
+            userDetails.getFullName(),
+            roles,
+            userDetails.getMoney(),
+            userDetails.getTimeRemaining());
   }
 
   private User saveUser(String value) {
@@ -177,5 +176,13 @@ public class LoginController {
       user.setPassword(passwordEncoder.encode(password));
       userRepository.save(user);
       return new ResponseEntity<>(true,HttpStatus.OK);
+  }
+  @GetMapping("/find-by/{id}")
+  public ResponseEntity<User> findByUser(@PathVariable("id") String userName){
+    User user = userRepository.findUserByUsername(userName);
+    if(user == null){
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<>(user,HttpStatus.OK);
   }
 }
