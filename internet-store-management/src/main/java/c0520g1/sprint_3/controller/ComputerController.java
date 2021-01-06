@@ -126,7 +126,7 @@ public class ComputerController {
     public ResponseEntity<List<ComputerDTO>> getUser(@PathVariable Long value) {
         List<Computer> computers;
         if (value == 0){
-             computers = computerService.findAll();
+            computers = computerService.findAll();
         } else {
             computers = computerService.findAllByStatusComputerName(value);
         }

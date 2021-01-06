@@ -16,6 +16,11 @@ public class ComputerServiceImpl implements ComputerService {
     private ComputerRepository computerRepository;
 
     @Override
+    public Computer findByComputerName(String name) {
+        return computerRepository.findByComputerName(name);
+    }
+
+    @Override
     public List<Computer> findAll() {
         return computerRepository.findAll();
     }
@@ -23,7 +28,6 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public void create(Computer computer) {
         computerRepository.save(computer);
-
     }
 
     @Override
@@ -35,5 +39,10 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public Computer findById(Long id) {
         return computerRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Computer> findAllByStatusComputerName(Long id) {
+        return computerRepository.findAllByStatusComputer_IdStatusComputer(id);
     }
 }

@@ -17,7 +17,6 @@ public interface UserService {
 
     void changePassWord(Long id, String password);
 
-    List<User> findAllByUsernameContaining(String inputSearch);
+    List<User> searchUser(String inputSearch);
 
-    List<User> findAllByUsernameContainingOrFullNameContaining(String inputSearch);
 }
