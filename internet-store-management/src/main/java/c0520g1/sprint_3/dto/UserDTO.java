@@ -8,17 +8,37 @@ public class UserDTO {
     private long id;
     private String username;
     private String fullName;
+    private String money;
+    private String timeRemaining;
     private List<String> role;
 
     public UserDTO() {
     }
 
-    public UserDTO(String token, long id, String username, String fullName, List<String> role) {
+    public UserDTO(String token, long id, String username, String fullName, List<String> role, String money,String timeRemaining) {
         this.token = token;
         this.id = id;
         this.username = username;
         this.fullName = fullName;
+        this.money = money;
+        this.timeRemaining = timeRemaining;
         this.role = role;
+    }
+
+    public String getMoney() {
+        return money;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
+    }
+
+    public String getTimeRemaining() {
+        return timeRemaining;
+    }
+
+    public void setTimeRemaining(String timeRemaining) {
+        this.timeRemaining = timeRemaining;
     }
 
     public String getToken() {

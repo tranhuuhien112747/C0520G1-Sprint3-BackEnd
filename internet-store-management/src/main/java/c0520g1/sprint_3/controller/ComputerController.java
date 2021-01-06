@@ -5,6 +5,7 @@ import c0520g1.sprint_3.model.Computer;
 import c0520g1.sprint_3.model.StatusComputer;
 import c0520g1.sprint_3.service.ComputerService;
 import c0520g1.sprint_3.service.StatusComputerService;
+import c0520g1.sprint_3.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,8 @@ public class ComputerController {
     ComputerService computerService;
     @Autowired
     StatusComputerService statusComputerService;
+    @Autowired
+    UserService userService;
 
     @GetMapping("/list")
     public ResponseEntity<List<ComputerDTO>> listComputers() {
@@ -123,7 +126,7 @@ public class ComputerController {
     public ResponseEntity<List<ComputerDTO>> getUser(@PathVariable Long value) {
         List<Computer> computers;
         if (value == 0){
-             computers = computerService.findAll();
+            computers = computerService.findAll();
         } else {
             computers = computerService.findAllByStatusComputerName(value);
         }
@@ -134,7 +137,7 @@ public class ComputerController {
 
             for (Computer computer : computers) {
                 System.err.println(computer.getUser());
-                if (computer.getUser().getFullName() == null) {
+                if (computer.getUser() == null) {
                     ComputerDTO computerDTO = new ComputerDTO();
                     computerDTO.setIdComputer(computer.getIdComputer());
                     computerDTO.setComputerName(computer.getComputerName());
@@ -186,9 +189,16 @@ public class ComputerController {
         if (computer == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            computerNew.setComputerName(computer.getComputerName());
-            computerNew.setStatusComputer(statusComputerService.findById(computer.getIdStatusComputer()));
-            computerService.create(computerNew);
+            if (computer.getIdUser() == null) {
+                computerNew.setComputerName(computer.getComputerName());
+                computerNew.setStatusComputer(statusComputerService.findById(computer.getIdStatusComputer()));
+                computerService.create(computerNew);
+            } else {
+                computerNew.setUser(userService.findById(computer.getIdComputer()));
+                computerNew.setComputerName(computer.getComputerName());
+                computerNew.setStatusComputer(statusComputerService.findById(computer.getIdStatusComputer()));
+                computerService.create(computerNew);
+            }
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
