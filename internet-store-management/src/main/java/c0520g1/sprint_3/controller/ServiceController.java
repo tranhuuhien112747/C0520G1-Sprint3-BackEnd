@@ -35,15 +35,13 @@ public class ServiceController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         if((services.getUnit().equals("dĩa"))||(services.getUnit().equals("tô"))){
-            services.setTypeServices(typeServicesService.findById(1L));
-        } else if ((services.getUnit().equals("chai"))||(services.getUnit().equals("ly"))||(services.getUnit().equals("lon"))) {
             services.setTypeServices(typeServicesService.findById(2L));
-        } else if ((services.getUnit().equals("giờ"))){
-            services.setTypeServices(typeServicesService.findById(4L));
-        } else if (services.getUnit().equals("VND")){
+        } else if ((services.getUnit().equals("chai"))||(services.getUnit().equals("ly"))||(services.getUnit().equals("lon"))) {
+            services.setTypeServices(typeServicesService.findById(1L));
+        } else if (services.getUnit().equals("thẻ")){
             services.setTypeServices(typeServicesService.findById(3L));
         } else {
-            services.setTypeServices(typeServicesService.findById(5L));
+            services.setTypeServices(typeServicesService.findById(4L));
         }
         servicesService.save(services);
         services1 = servicesService.findServiceByName(services.getServiceName());
