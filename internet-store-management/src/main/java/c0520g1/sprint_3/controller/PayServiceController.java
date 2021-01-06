@@ -163,9 +163,6 @@ public class PayServiceController {
     }
 
     /**
-     *
-     *
-     *
      * @param billDTO
      * @return void
      */
@@ -243,8 +240,14 @@ public class PayServiceController {
         double currentMoneyUser = Double.parseDouble(user.getMoney());
         double moneyUser = currentMoneyUser - price;
         double time = (price / 5000) * 60;
+        double timeUser;
+        if (user.getTimeRemaining() == null) {
+            timeUser = 0;
+        } else {
+            timeUser = Double.parseDouble(user.getTimeRemaining());
+        }
         user.setMoney(String.valueOf(moneyUser));
-        user.setTimeRemaining(String.valueOf(time));
+        user.setTimeRemaining(String.valueOf(timeUser + time));
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
