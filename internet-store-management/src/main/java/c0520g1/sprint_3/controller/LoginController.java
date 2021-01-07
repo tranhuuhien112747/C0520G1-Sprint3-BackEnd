@@ -205,4 +205,12 @@ public class LoginController {
     }
     return new ResponseEntity<>(true, HttpStatus.OK);
   }
+  @GetMapping("/get-money")
+  public ResponseEntity<String> getMoney(@RequestParam("userName") String userName){
+    User user = userRepository.findUserByUsername(userName);
+    if(user == null){
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<>(user.getMoney(), HttpStatus.OK);
+  }
 }
