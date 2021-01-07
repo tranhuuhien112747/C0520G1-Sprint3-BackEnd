@@ -3,11 +3,9 @@ package c0520g1.sprint_3.controller;
 import c0520g1.sprint_3.config.JwtTokenProvider;
 import c0520g1.sprint_3.dto.TokenDTO;
 import c0520g1.sprint_3.dto.UserDTO;
-import c0520g1.sprint_3.model.LoginRequest;
-import c0520g1.sprint_3.model.Role;
-import c0520g1.sprint_3.model.User;
-import c0520g1.sprint_3.model.UserDetailsImpl;
+import c0520g1.sprint_3.model.*;
 import c0520g1.sprint_3.repository.UserRepository;
+import c0520g1.sprint_3.service.BillService;
 import c0520g1.sprint_3.service.RoleService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -58,6 +56,9 @@ public class LoginController {
 
   @Autowired
   JavaMailSender javaMailSender;
+
+  @Autowired
+  private BillService bill;
 
   @PostMapping("/login")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -184,5 +185,24 @@ public class LoginController {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     return new ResponseEntity<>(user,HttpStatus.OK);
+  }
+  @GetMapping("/save-user")
+  public ResponseEntity<Void> saveTimeRemaining(@RequestParam("userName") String userName, @RequestParam("time") String time){
+    User user = userRepository.findUserByUsername(userName);
+    if(user == null){
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    user.setTimeRemaining(time);
+    userRepository.save(user);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @GetMapping("/get-message")
+  public ResponseEntity<Boolean> getMessage(){
+    List<Bill> billList = bill.findBillByStatusDisplayTrue();
+    if (billList.isEmpty()) {
+      return new ResponseEntity<>(false,HttpStatus.OK);
+    }
+    return new ResponseEntity<>(true, HttpStatus.OK);
   }
 }

@@ -283,7 +283,7 @@ public class PayServiceController {
         int price = Integer.parseInt(priceHour);
         int currentMoneyUser = Integer.parseInt(user.getMoney());
         int moneyUser = currentMoneyUser - price;
-        int time = (price / 5000) * 60;
+        int time = ((price / 5000) * 60)*60000;
         int timeUser;
         if (user.getTimeRemaining() == null) {
             timeUser = 0;
