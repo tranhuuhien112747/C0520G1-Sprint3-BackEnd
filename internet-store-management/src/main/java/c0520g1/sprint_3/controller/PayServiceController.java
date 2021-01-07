@@ -48,7 +48,7 @@ public class PayServiceController {
 
 
     /**
-     * show all exam
+     * show all service
      *
      * @return list <Service>
      */
@@ -61,6 +61,19 @@ public class PayServiceController {
         return new ResponseEntity<>(servicesList, HttpStatus.OK);
     }
 
+    /**
+     * show all bill status true
+     *
+     * @return list <Bill>
+     */
+    @GetMapping(value = "/listBill")
+    public ResponseEntity<List<Bill>> getListBill() {
+        List<Bill> billList = bill.findBillByStatusDisplayTrue();
+        if (billList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(billList, HttpStatus.OK);
+    }
 
     /**
      * payment by account
@@ -76,7 +89,7 @@ public class PayServiceController {
         BillServices billServices;
         Bill newBill = new Bill();
         int totalPayMoney = 0;
-        double moneyUser = Double.parseDouble(user.getMoney());
+        int moneyUser = Integer.parseInt(user.getMoney());
         int size = billDTO.getList().size();
         newBill.setStatus(true);
         newBill.setStatusDisplay(true);
@@ -163,6 +176,8 @@ public class PayServiceController {
     }
 
     /**
+     * Nạp tiền vào tài khoản trực tiếp
+     *
      * @param billDTO
      * @return void
      */
@@ -199,20 +214,12 @@ public class PayServiceController {
         User user = userService.findById(newBill.getUser().getIdUser());
         deposit = newService.getPrice();
         moneyUser = user.getMoney();
-        total = String.valueOf(Double.parseDouble(moneyUser) + Double.parseDouble(deposit));
+        total = String.valueOf(Integer.parseInt(moneyUser) + Integer.parseInt(deposit));
         user.setMoney(total);
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/listBill")
-    public ResponseEntity<List<Bill>> getListBill() {
-        List<Bill> billList = bill.findBillByStatusDisplayTrue();
-        if (billList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(billList, HttpStatus.OK);
-    }
 
     @GetMapping(value = "/listBill/{idBill}")
     public ResponseEntity<Bill> getBillByIdBill(@PathVariable Long idBill) {
@@ -236,15 +243,15 @@ public class PayServiceController {
     @GetMapping(value = "/getBuyHours")
     public ResponseEntity<?> getTimeRemainingUser(@RequestParam String idUser, @RequestParam String priceHour) {
         User user = userService.findById(Long.parseLong(idUser));
-        double price = Double.parseDouble(priceHour);
-        double currentMoneyUser = Double.parseDouble(user.getMoney());
-        double moneyUser = currentMoneyUser - price;
-        double time = (price / 5000) * 60;
-        double timeUser;
+        int price = Integer.parseInt(priceHour);
+        int currentMoneyUser = Integer.parseInt(user.getMoney());
+        int moneyUser = currentMoneyUser - price;
+        int time = (price / 5000) * 60;
+        int timeUser;
         if (user.getTimeRemaining() == null) {
             timeUser = 0;
         } else {
-            timeUser = Double.parseDouble(user.getTimeRemaining());
+            timeUser = Integer.parseInt(user.getTimeRemaining());
         }
         user.setMoney(String.valueOf(moneyUser));
         user.setTimeRemaining(String.valueOf(timeUser + time));
