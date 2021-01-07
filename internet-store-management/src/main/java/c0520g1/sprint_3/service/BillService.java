@@ -14,4 +14,6 @@ public interface BillService {
     Bill findById(Long id);
 
     List<Bill> findBillByStatusDisplayTrue();
+
+
 }
