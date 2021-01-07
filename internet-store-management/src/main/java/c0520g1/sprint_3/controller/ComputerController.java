@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -190,13 +192,16 @@ public class ComputerController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             if (computer.getIdUser() == null) {
+                computerNew.setUser(null);
+                computerNew.setTimeStart(null);
+                computerNew.setStatusComputer(statusComputerService.findById((long) 2));
                 computerNew.setComputerName(computer.getComputerName());
-                computerNew.setStatusComputer(statusComputerService.findById(computer.getIdStatusComputer()));
                 computerService.create(computerNew);
             } else {
-                computerNew.setUser(userService.findById(computer.getIdComputer()));
+                computerNew.setUser(userService.findById(computer.getIdUser()));
+                computerNew.setTimeStart(String.valueOf(LocalDateTime.now()));
+                computerNew.setStatusComputer(statusComputerService.findById((long) 1));
                 computerNew.setComputerName(computer.getComputerName());
-                computerNew.setStatusComputer(statusComputerService.findById(computer.getIdStatusComputer()));
                 computerService.create(computerNew);
             }
             return new ResponseEntity<>(HttpStatus.OK);

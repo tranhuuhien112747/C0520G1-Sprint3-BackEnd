@@ -48,7 +48,7 @@ public class PayServiceController {
 
 
     /**
-     * show all exam
+     * show all service
      *
      * @return list <Service>
      */
@@ -61,10 +61,22 @@ public class PayServiceController {
         return new ResponseEntity<>(servicesList, HttpStatus.OK);
     }
 
+    /**
+     * show all bill status true
+     *
+     * @return list <Bill>
+     */
+    @GetMapping(value = "/listBill")
+    public ResponseEntity<List<Bill>> getListBill() {
+        List<Bill> billList = bill.findBillByStatusDisplayTrue();
+        if (billList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(billList, HttpStatus.OK);
+    }
 
     /**
      * payment by account
-     * Thanh toán bằng tài khoản
      *
      * @param billDTO
      * @return void
@@ -101,7 +113,6 @@ public class PayServiceController {
 
     /**
      * payment direct
-     * Thanh toán trực tiếp
      *
      * @param billDTO
      * @return void
@@ -133,7 +144,7 @@ public class PayServiceController {
 
     /**
      * payment PayPal
-     * Thanh toán qua PayPal
+     * Payment for services by PayPal
      *
      * @param billDTO
      * @return void
@@ -163,11 +174,14 @@ public class PayServiceController {
     }
 
     /**
+     *
+     * create bill add money to account direct
+     *
      * @param billDTO
      * @return void
      */
     @PostMapping(value = "/deposit")
-    public ResponseEntity<?> createBillDeposit(@RequestBody BillDTO billDTO) {
+    public ResponseEntity<?> createBillDepositDirect(@RequestBody BillDTO billDTO) {
         Services newService = null;
         Bill newBill = new Bill();
         BillServices billServices = new BillServices();
@@ -183,6 +197,45 @@ public class PayServiceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Deposit money into your account with PayPal
+     *
+     * @param billDTO
+     * @return void
+     */
+    @PostMapping(value = "/deposit-payPal")
+    public ResponseEntity<?> PaymentDepositPayPal(@RequestBody BillDTO billDTO) {
+        Services newService = null;
+        Bill newBill = new Bill();
+        BillServices billServices = new BillServices();
+        newBill.setStatus(true);
+        newBill.setStatusDisplay(true);
+        newBill.setUser(userService.findById(billDTO.getIdUser()));
+        bill.create(newBill);
+        newService = services.findById(billDTO.getIdService());
+        billServices.setBill(bill.findById(newBill.getIdBill()));
+        billServices.setServices(newService);
+        billServices.setQuantityBooked(Long.parseLong(newService.getQuantity()));
+        billServiceService.create(billServices);
+        String deposit = null;
+        String moneyUser = null;
+        String total = null;
+        User user = userService.findById(newBill.getUser().getIdUser());
+        deposit = newService.getPrice();
+        moneyUser = user.getMoney();
+        total = String.valueOf(Integer.parseInt(moneyUser) + Integer.parseInt(deposit));
+        user.setMoney(total);
+        userService.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    /**
+     * confirm pouring money into account blazing
+     *
+     * @PathVariable idBill
+     * @return void
+     */
     @PutMapping(value = "/deposit/{idBill}")
     public ResponseEntity<Void> payDepositAccountUser(@PathVariable Long idBill) {
         Services newService = null;
@@ -194,7 +247,6 @@ public class PayServiceController {
         newBill.setStatus(true);
         newBill.setStatusDisplay(false);
         bill.create(newBill);
-
         newService = services.findById(billServices.getServices().getIdService());
         User user = userService.findById(newBill.getUser().getIdUser());
         deposit = newService.getPrice();
@@ -205,14 +257,6 @@ public class PayServiceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/listBill")
-    public ResponseEntity<List<Bill>> getListBill() {
-        List<Bill> billList = bill.findBillByStatusDisplayTrue();
-        if (billList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(billList, HttpStatus.OK);
-    }
 
     @GetMapping(value = "/listBill/{idBill}")
     public ResponseEntity<Bill> getBillByIdBill(@PathVariable Long idBill) {
