@@ -280,10 +280,10 @@ public class PayServiceController {
     @GetMapping(value = "/getBuyHours")
     public ResponseEntity<?> getTimeRemainingUser(@RequestParam String idUser, @RequestParam String priceHour) {
         User user = userService.findById(Long.parseLong(idUser));
-        int price = Integer.parseInt(priceHour);
+        double price = Double.parseDouble(priceHour);
         int currentMoneyUser = Integer.parseInt(user.getMoney());
-        int moneyUser = currentMoneyUser - price;
-        int time = ((price / 5000) * 60)*60000;
+        int moneyUser = (int) (currentMoneyUser - price);
+        int time = (int) (((price / 5000) * 60)*60000);
         int timeUser;
         if (user.getTimeRemaining() == null) {
             timeUser = 0;

@@ -177,7 +177,7 @@ public class ComputerController {
         Computer computerNew = new Computer();
         computerNew.setComputerName(computer.getComputerName());
         computerNew.setStatus(true);
-        computerNew.setTimeStart(String.valueOf(LocalTime.now()));
+//        computerNew.setTimeStart(String.valueOf(LocalTime.now()));
         computerNew.setStatusComputer(statusComputerService.findById(computer.getIdStatusComputer()));
         computerService.create(computerNew);
         Computer computer1;
